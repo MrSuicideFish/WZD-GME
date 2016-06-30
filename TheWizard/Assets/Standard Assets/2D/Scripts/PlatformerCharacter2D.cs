@@ -12,13 +12,14 @@ namespace UnityStandardAssets._2D
         [SerializeField] private LayerMask m_WhatIsGround;                  // A mask determining what is ground to the character
 
         private Transform m_GroundCheck;    // A position marking where to check if the player is grounded.
-        const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
-        private bool m_Grounded;            // Whether or not the player is grounded.
+        public const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
+        public bool m_Grounded { get; private set; }            // Whether or not the player is grounded.
         private Transform m_CeilingCheck;   // A position marking where to check for ceilings
         const float k_CeilingRadius = .01f; // Radius of the overlap circle to determine if the player can stand up
         private Animator m_Anim;            // Reference to the player's animator component.
         private Rigidbody2D m_Rigidbody2D;
         private bool m_FacingRight = true;  // For determining which way the player is currently facing.
+        public SpriteRenderer CharacterSpriteRenderer;
 
         private void Awake()
         {
@@ -28,7 +29,6 @@ namespace UnityStandardAssets._2D
             m_Anim = GetComponent<Animator>();
             m_Rigidbody2D = GetComponent<Rigidbody2D>();
         }
-
 
         private void FixedUpdate()
         {
@@ -48,7 +48,7 @@ namespace UnityStandardAssets._2D
             m_Anim.SetFloat("vSpeed", m_Rigidbody2D.velocity.y);
         }
 
-
+        #region Arbitrary Locomotion
         public void Move(float move, bool crouch, bool jump)
         {
             // If crouching, check to see if the character can stand up
@@ -110,5 +110,24 @@ namespace UnityStandardAssets._2D
             theScale.x *= -1;
             transform.localScale = theScale;
         }
+
+        public RaycastHit2D GROUND_CHECK( )
+        {
+            RaycastHit2D hit;
+
+            var footPos =
+                new Vector3(
+                    CharacterSpriteRenderer.bounds.center.x,
+                    CharacterSpriteRenderer.bounds.center.y - CharacterSpriteRenderer.bounds.extents.y,
+                    0 ) * 1.0f;
+
+            hit = Physics2D.Raycast( footPos, Vector2.down, 6.0f, 1 << 8 );
+
+            return hit;
+        }
+        #endregion
+
+        #region Platform Handling
+        #endregion
     }
 }
