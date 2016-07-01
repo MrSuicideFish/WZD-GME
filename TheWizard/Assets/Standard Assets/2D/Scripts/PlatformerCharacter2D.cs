@@ -11,6 +11,9 @@ namespace UnityStandardAssets._2D
         [SerializeField] private bool m_AirControl = false;                 // Whether or not a player can steer while jumping;
         [SerializeField] private LayerMask m_WhatIsGround;                  // A mask determining what is ground to the character
 
+        //Static flags
+        private static LayerMask LocomotionMask = new LayerMask( );
+
         private Transform m_GroundCheck;    // A position marking where to check if the player is grounded.
         public const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
         public bool m_Grounded { get; private set; }            // Whether or not the player is grounded.

@@ -67,6 +67,19 @@ public class wCameraEditor : Editor
             EditorGUILayout.LabelField( "---OTHER SETTINGS---" );
             Camera_Instance.TargetZoomDistance =
                 EditorGUILayout.Slider( "Zoom Distance:", Camera_Instance.TargetZoomDistance, wCamera.MinZoomDistance, wCamera.MaxZoomDistance );
+
+            Camera_Instance.MinmumWorldX =
+                EditorGUILayout.Slider( "Minimum World X", Camera_Instance.MinmumWorldX, -1000, 1000 );
+
+            Camera_Instance.MinmumWorldY =
+                EditorGUILayout.Slider( "Minimum World Y", Camera_Instance.MinmumWorldY, -1000, 1000 );
+
+            Camera_Instance.MaximumWorldX =
+    EditorGUILayout.Slider( "Maximum World X", Camera_Instance.MaximumWorldX, -1000, 1000 );
+
+            Camera_Instance.MaximumWorldY =
+                EditorGUILayout.Slider( "Maximum World Y", Camera_Instance.MaximumWorldY, -1000, 1000 );
+
         }
 
         EditorGUILayout.EndVertical( );

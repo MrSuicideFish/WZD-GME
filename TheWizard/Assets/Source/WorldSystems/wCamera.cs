@@ -8,7 +8,7 @@ public enum W_CAMERA_TYPE
     INPUT
 }
 
-[RequireComponent(typeof(Camera))]
+[RequireComponent( typeof( Camera ) )]
 public class wCamera : MonoBehaviour
 {
     //Static Members
@@ -18,20 +18,34 @@ public class wCamera : MonoBehaviour
     public static readonly float MinFollowSpeed = 1.0f;
     public static readonly float MaxFollowSpeed = 10.0f;
 
-    public static readonly float MinZoomDistance = 0.0f;
+    public static readonly float MinZoomDistance = -5.0f;
     public static readonly float MaxZoomDistance = 5.0f;
 
     public static bool CameraIsAvailableToChange = true;
 
     //Cache
     private Camera CameraComponent;
-    [HideInInspector] public Transform TargetTransform;
+    [HideInInspector]
+    public Transform TargetTransform;
 
-    [HideInInspector] public float TargetFollowSpeedX;
-    [HideInInspector] public float TargetFollowSpeedY;
+    [HideInInspector]
+    public float TargetFollowSpeedX;
+    [HideInInspector]
+    public float TargetFollowSpeedY;
 
-    [HideInInspector] public float TargetInputSpeed;
-    [HideInInspector] public float TargetZoomDistance;
+    [HideInInspector]
+    public float TargetInputSpeed;
+    [HideInInspector]
+    public float TargetZoomDistance;
+
+    [HideInInspector]
+    public float MinmumWorldX = -99999;
+    [HideInInspector]
+    public float MaximumWorldX = 99999;
+    [HideInInspector]
+    public float MinmumWorldY = -99999;
+    [HideInInspector]
+    public float MaximumWorldY = 99999;
 
     //Camera Flags
     public bool IsLocked { get; private set; }
@@ -57,7 +71,7 @@ public class wCamera : MonoBehaviour
         }
     }
 
-    protected virtual void ProcessCameraState(W_CAMERA_TYPE type )
+    protected virtual void ProcessCameraState( W_CAMERA_TYPE type )
     {
         float zoom = ( 3 ) + TargetZoomDistance;
 
@@ -71,7 +85,7 @@ public class wCamera : MonoBehaviour
 
             case W_CAMERA_TYPE.FOLLOW:
 
-                if(TargetTransform)
+                if ( TargetTransform )
                 {
                     var xPos =
                         Mathf.Lerp( calculatedPosition.x, TargetTransform.position.x, TargetFollowSpeedX * Time.deltaTime );
@@ -80,9 +94,8 @@ public class wCamera : MonoBehaviour
 
                     calculatedPosition = new Vector3( xPos, yPos, -10 );
                 }
-                else //No target
+                else
                 {
-
                 }
 
                 break;
@@ -90,6 +103,9 @@ public class wCamera : MonoBehaviour
             case W_CAMERA_TYPE.INPUT:
                 break;
         }
+
+        calculatedPosition.x = Mathf.Clamp( calculatedPosition.x, MinmumWorldX, MaximumWorldX );
+        calculatedPosition.y = Mathf.Clamp( calculatedPosition.y, MinmumWorldY + TargetZoomDistance, MaximumWorldY + TargetZoomDistance ) ;
 
         transform.position = calculatedPosition;
         CameraComponent.orthographicSize = zoom;

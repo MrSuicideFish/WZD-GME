@@ -50,7 +50,7 @@ public class CharacterShadow : MonoBehaviour
                             transform.TransformPoint( footPos ),
                             groundCast.point );
 
-                    if ( distToGround < 5.0f )
+                    if ( distToGround < 5.5f )
                     {
                         //Enable shadow
                         if ( !ShadowTransform.gameObject.activeInHierarchy )
